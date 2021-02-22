@@ -148,11 +148,6 @@ bool routing::del_vif(int if_index, int vif) const
         }
     }
 
-    if (m_added_ifs.erase(if_index) < 1) {
-        HC_LOG_ERROR("inconsistent database");
-
-    };
-
     HC_LOG_DEBUG("removed interface with vif number: " << vif) ;
     return true;
 }
@@ -162,7 +157,12 @@ routing::~routing()
     HC_LOG_TRACE("");
 
     //clean up all added interfaces
-    for (auto e : m_added_ifs) {
-        del_vif(e, m_interfaces->get_virtual_if_index(e));
+    for (auto it = m_added_ifs.begin(); it != m_added_ifs.end(); it = m_added_ifs.begin(it);) {
+       auto e = *it;
+       del_vif(e, m_interfaces->get_virtual_if_index(e));
+
+       if (m_added_ifs.erase(e) < 1) {
+           HC_LOG_ERROR("inconsistent database");
+       };
     }
 }
