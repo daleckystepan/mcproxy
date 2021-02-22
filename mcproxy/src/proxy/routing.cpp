@@ -157,7 +157,7 @@ routing::~routing()
     HC_LOG_TRACE("");
 
     //clean up all added interfaces
-    for (auto it = m_added_ifs.begin(); it != m_added_ifs.end(); it = m_added_ifs.begin(it);) {
+    for (auto it = m_added_ifs.begin(); it != m_added_ifs.end(); it = m_added_ifs.begin(it) ) {
        auto e = *it;
        del_vif(e, m_interfaces->get_virtual_if_index(e));
 
